@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="50dp"
+    android:height="50dp"
+    android:viewportWidth="100"
+    android:viewportHeight="100">
+
+    <!-- 灶台外框 -->
+    <path
+        android:strokeColor="#0095FF"
+        android:strokeWidth="4"
+        android:fillColor="@android:color/transparent"
+        android:pathData="M20,35 L80,35 L80,75 L20,75 Z" />
+
+    <!-- 左炉圈 -->
+    <path
+        android:strokeColor="#0095FF"
+        android:strokeWidth="4"
+        android:fillColor="@android:color/transparent"
+        android:pathData="M35,50 A10,10 0 1,1 34.9,50" />
+
+    <!-- 右炉圈 -->
+    <path
+        android:strokeColor="#0095FF"
+        android:strokeWidth="4"
+        android:fillColor="@android:color/transparent"
+        android:pathData="M65,50 A10,10 0 1,1 64.9,50" />
+
+</vector>

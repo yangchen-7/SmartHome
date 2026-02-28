@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp"
+    android:height="48dp"
+    android:viewportWidth="48"
+    android:viewportHeight="48">
+
+    <!-- 圆形背景 -->
+    <path
+        android:pathData="M24,0
+                          A24,24 0 1,1 23.9,0"
+        android:fillColor="#FFFFFFFF"/>
+
+    <!-- 第一条横线 -->
+    <path
+        android:pathData="M14 18H34"
+        android:strokeColor="#000000"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:fillColor="@android:color/transparent"/>
+
+    <!-- 第二条横线 -->
+    <path
+        android:pathData="M14 24H34"
+        android:strokeColor="#000000"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:fillColor="@android:color/transparent"/>
+
+    <!-- 第三条横线 -->
+    <path
+        android:pathData="M14 30H34"
+        android:strokeColor="#000000"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:fillColor="@android:color/transparent"/>
+
+</vector>

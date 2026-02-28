@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="50dp"
+    android:height="50dp"
+    android:viewportWidth="100"
+    android:viewportHeight="100">
+
+    <!-- 床底 -->
+    <path
+        android:strokeColor="#0095FF"
+        android:strokeWidth="4"
+        android:fillColor="@android:color/transparent"
+        android:pathData="M20,55 L80,55 L80,70 L20,70 Z" />
+
+    <!-- 床头 -->
+    <path
+        android:strokeColor="#0095FF"
+        android:strokeWidth="4"
+        android:fillColor="@android:color/transparent"
+        android:pathData="M20,40 L35,40 L35,55 L20,55 Z" />
+
+    <!-- 枕头 -->
+    <path
+        android:strokeColor="#0095FF"
+        android:strokeWidth="4"
+        android:fillColor="@android:color/transparent"
+        android:pathData="M40,45 L70,45 L70,55 L40,55 Z" />
+
+</vector>

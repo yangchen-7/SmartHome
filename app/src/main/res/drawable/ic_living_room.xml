@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="50dp"
+    android:height="50dp"
+    android:viewportWidth="100"
+    android:viewportHeight="100">
+
+    <!-- 沙发底座 -->
+    <path
+        android:strokeColor="#0095FF"
+        android:strokeWidth="4"
+        android:fillColor="@android:color/transparent"
+        android:pathData="M20,55 L80,55 L80,70 L20,70 Z" />
+
+    <!-- 沙发靠背 -->
+    <path
+        android:strokeColor="#0095FF"
+        android:strokeWidth="4"
+        android:fillColor="@android:color/transparent"
+        android:pathData="M25,40 L75,40 L75,55 L25,55 Z" />
+
+    <!-- 左扶手 -->
+    <path
+        android:strokeColor="#0095FF"
+        android:strokeWidth="4"
+        android:fillColor="@android:color/transparent"
+        android:pathData="M20,45 L25,45 L25,70 L20,70 Z" />
+
+    <!-- 右扶手 -->
+    <path
+        android:strokeColor="#0095FF"
+        android:strokeWidth="4"
+        android:fillColor="@android:color/transparent"
+        android:pathData="M75,45 L80,45 L80,70 L75,70 Z" />
+
+    <!-- 地板线 -->
+    <path
+        android:strokeColor="#0095FF"
+        android:strokeWidth="3"
+        android:fillColor="@android:color/transparent"
+        android:pathData="M10,80 L90,80" />
+
+</vector>

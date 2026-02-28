@@ -1,4 +1,4 @@
-package com.example.smarthome
+package com.example.smarthome.Activity
 
 import android.os.Bundle
 import com.google.android.material.snackbar.Snackbar
@@ -7,16 +7,17 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
-import com.example.smarthome.databinding.ActivityMainBinding
+import com.example.smarthome.R
+import com.example.smarthome.databinding.ActivityLoginBinding
 
-class MainActivity : AppCompatActivity() {
-    
-    private lateinit var binding: ActivityMainBinding
+class LoginActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityLoginBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
     }

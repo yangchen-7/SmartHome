@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="50dp"
+    android:height="50dp"
+    android:viewportWidth="100"
+    android:viewportHeight="100">
+
+    <!-- 花洒杆 -->
+    <path
+        android:strokeColor="#0095FF"
+        android:strokeWidth="4"
+        android:fillColor="@android:color/transparent"
+        android:pathData="M30,30 L60,30" />
+
+    <!-- 花洒头 -->
+    <path
+        android:strokeColor="#0095FF"
+        android:strokeWidth="4"
+        android:fillColor="@android:color/transparent"
+        android:pathData="M60,30 A10,10 0 0,1 60,50" />
+
+    <!-- 水滴 -->
+    <path
+        android:strokeColor="#0095FF"
+        android:strokeWidth="3"
+        android:fillColor="@android:color/transparent"
+        android:pathData="M55,55 L55,65" />
+
+    <path
+        android:strokeColor="#0095FF"
+        android:strokeWidth="3"
+        android:fillColor="@android:color/transparent"
+        android:pathData="M65,55 L65,65" />
+
+</vector>
