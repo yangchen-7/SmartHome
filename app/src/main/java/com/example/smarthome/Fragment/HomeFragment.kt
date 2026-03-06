@@ -1,11 +1,14 @@
 package com.example.smarthome.Fragment
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import com.example.smarthome.Activity.LivingRoomActivity
+import com.example.smarthome.Adapter.OnRoomItemClickListener
 import com.example.smarthome.Adapter.RoomAdapter
 import com.example.smarthome.Model.Device
 import com.example.smarthome.Model.Room
@@ -13,7 +16,7 @@ import com.example.smarthome.R
 import com.example.smarthome.databinding.FragmentHomeBinding
 
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), OnRoomItemClickListener {
 
     private lateinit var binding: FragmentHomeBinding
     private lateinit var roomList: MutableList<Room>
@@ -28,6 +31,13 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
+    override fun onItemClick(room: Room) {
+        if (room.id == 1){
+            val intent = Intent(requireContext(), LivingRoomActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
     private fun initView(){
 
         roomList = mutableListOf(
@@ -38,13 +48,9 @@ class HomeFragment : Fragment() {
         )
         
         // 初始化RecyclerView
-        adapter = RoomAdapter(roomList)
+        adapter = RoomAdapter(roomList,this)
         binding.rvRoomList.adapter = adapter
-        
-        // 添加addButton点击事件
-        binding.addButton.setOnClickListener {
-            showAddDeviceDialog()
-        }
+
     }
     
     private fun showAddDeviceDialog(){

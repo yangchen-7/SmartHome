@@ -6,7 +6,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.smarthome.Model.Room
 import com.example.smarthome.databinding.ItemRoomBinding
 
-class RoomAdapter(private val roomList: List<Room>) : RecyclerView.Adapter<RoomAdapter.RoomViewHolder>() {
+interface OnRoomItemClickListener{
+    fun onItemClick(room : Room)
+}
+
+class RoomAdapter(private val roomList: List<Room>,private val listener: OnRoomItemClickListener) : RecyclerView.Adapter<RoomAdapter.RoomViewHolder>() {
 
     class RoomViewHolder(private val binding: ItemRoomBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(room: Room) {
@@ -24,6 +28,9 @@ class RoomAdapter(private val roomList: List<Room>) : RecyclerView.Adapter<RoomA
     override fun onBindViewHolder(holder: RoomViewHolder, position: Int) {
         val room = roomList[position]
         holder.bind(room)
+        holder.itemView.setOnClickListener {
+            listener.onItemClick(room)
+        }
     }
 
     override fun getItemCount(): Int {
