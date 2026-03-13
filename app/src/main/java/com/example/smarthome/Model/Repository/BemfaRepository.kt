@@ -11,7 +11,10 @@ class BemfaRepository {
     private val api = RetrofitClient.api
     private val TAG = "BemfaRepository"
 
-    suspend fun sendCommand(msg: String): Result<String> {
+    /**
+     * 发送获取空调数据的请求
+     * */
+    suspend fun sendAirConditionerCommend(msg: String): Result<String> {
         return withContext(Dispatchers.IO) {
             try {
                 val response = api.pushMessage(
@@ -36,7 +39,10 @@ class BemfaRepository {
         }
     }
 
-    suspend fun getLatestMessage(): Result<List<MessageItem>> {
+    /***
+     *获取空调数据
+     */
+    suspend fun getAirConditionerMessage(): Result<List<MessageItem>> {
         return withContext(Dispatchers.IO) {
             try {
                 val response = api.getMessages(
@@ -58,4 +64,250 @@ class BemfaRepository {
             }
         }
     }
+    /**
+     * 改变热水器状态
+     * */
+    suspend fun sendWaterHeaterCommend(msg: String) : Result<String>{
+        return withContext(Dispatchers.IO){
+            try {
+                val response = api.pushMessage(
+                    PushRequest(
+                        uid = "6bf8a0c06931436296f8845bf2069fc3",
+                        topic = "water002",
+                        type = 3,
+                        msg = msg,
+                        wemsg = "设备状态：$msg"
+                    )
+                )
+
+                if (response.code == 0) {
+                    Result.success("发送成功")
+                } else {
+                    Result.failure(Exception(response.message))
+                }
+
+            } catch (e: Exception) {
+                Result.failure(e)
+            }
+        }
+    }
+
+    /**
+     * 获取热水器状态
+     * */
+    suspend fun getWaterHeaterMessage() : Result<List<MessageItem>>{
+        return withContext(Dispatchers.IO) {
+            try {
+                val response = api.getMessages(
+                    uid = "6bf8a0c06931436296f8845bf2069fc3",
+                    topic = "water002",
+                    type = 3,
+                    num = 5
+                )
+                Log.d(TAG,"request code is ==="+response.code)
+                Log.d(TAG,"request msg is ==="+response.data)
+                if (response.code == 0) {
+                    Result.success(response.data ?: emptyList())
+                } else {
+                    Result.failure(Exception(response.message))
+                }
+
+            } catch (e: Exception) {
+                Result.failure(e)
+            }
+        }
+    }
+
+    suspend fun sendTvCommend(msg : String) : Result<String>{
+        return withContext(Dispatchers.IO){
+            try {
+                val response = api.pushMessage(
+                    PushRequest(
+                        uid = "6bf8a0c06931436296f8845bf2069fc3",
+                        topic = "TV002",
+                        type = 3,
+                        msg = msg,
+                        wemsg = "设备状态：$msg"
+                    )
+                )
+
+                if (response.code == 0) {
+                    Result.success("发送成功")
+                } else {
+                    Result.failure(Exception(response.message))
+                }
+
+            } catch (e: Exception) {
+                Result.failure(e)
+            }
+        }
+    }
+
+    suspend fun getTVMessage() : Result<List<MessageItem>>{
+        return withContext(Dispatchers.IO) {
+            try {
+                val response = api.getMessages(
+                    uid = "6bf8a0c06931436296f8845bf2069fc3",
+                    topic = "water002",
+                    type = 3,
+                    num = 5
+                )
+                Log.d(TAG,"request code is ==="+response.code)
+                Log.d(TAG,"request msg is ==="+response.data)
+                if (response.code == 0) {
+                    Result.success(response.data ?: emptyList())
+                } else {
+                    Result.failure(Exception(response.message))
+                }
+
+            } catch (e: Exception) {
+                Result.failure(e)
+            }
+        }
+    }
+
+    suspend fun sendLivingLampCommend(msg : String) : Result<String>{
+        return withContext(Dispatchers.IO){
+            try {
+                val response = api.pushMessage(
+                    PushRequest(
+                        uid = "6bf8a0c06931436296f8845bf2069fc3",
+                        topic = "lamp002",
+                        type = 3,
+                        msg = msg,
+                        wemsg = "设备状态：$msg"
+                    )
+                )
+
+                if (response.code == 0) {
+                    Result.success("发送成功")
+                } else {
+                    Result.failure(Exception(response.message))
+                }
+
+            } catch (e: Exception) {
+                Result.failure(e)
+            }
+        }
+    }
+
+    suspend fun getLivingLampMessage() : Result<List<MessageItem>>{
+        return withContext(Dispatchers.IO) {
+            try {
+                val response = api.getMessages(
+                    uid = "6bf8a0c06931436296f8845bf2069fc3",
+                    topic = "lamp002",
+                    type = 3,
+                    num = 5
+                )
+                Log.d(TAG,"request code is ==="+response.code)
+                Log.d(TAG,"request msg is ==="+response.data)
+                if (response.code == 0) {
+                    Result.success(response.data ?: emptyList())
+                } else {
+                    Result.failure(Exception(response.message))
+                }
+
+            } catch (e: Exception) {
+                Result.failure(e)
+            }
+        }
+    }
+
+    suspend fun sendBadRoomLampCommend(msg : String) : Result<String>{
+        return withContext(Dispatchers.IO){
+            try {
+                val response = api.pushMessage(
+                    PushRequest(
+                        uid = "6bf8a0c06931436296f8845bf2069fc3",
+                        topic = "fant002",
+                        type = 3,
+                        msg = msg,
+                        wemsg = "设备状态：$msg"
+                    )
+                )
+
+                if (response.code == 0) {
+                    Result.success("发送成功")
+                } else {
+                    Result.failure(Exception(response.message))
+                }
+
+            } catch (e: Exception) {
+                Result.failure(e)
+            }
+        }
+    }
+
+    suspend fun getBadRoomLampMessage() : Result<List<MessageItem>>{
+        return withContext(Dispatchers.IO) {
+            try {
+                val response = api.getMessages(
+                    uid = "6bf8a0c06931436296f8845bf2069fc3",
+                    topic = "fant002",
+                    type = 3,
+                    num = 5
+                )
+                Log.d(TAG,"request code is ==="+response.code)
+                Log.d(TAG,"request msg is ==="+response.data)
+                if (response.code == 0) {
+                    Result.success(response.data ?: emptyList())
+                } else {
+                    Result.failure(Exception(response.message))
+                }
+
+            } catch (e: Exception) {
+                Result.failure(e)
+            }
+        }
+    }
+
+    suspend fun sendCurtainCommend(msg : String) : Result<String>{
+        return withContext(Dispatchers.IO){
+            try {
+                val response = api.pushMessage(
+                    PushRequest(
+                        uid = "6bf8a0c06931436296f8845bf2069fc3",
+                        topic = "air002",
+                        type = 3,
+                        msg = msg,
+                        wemsg = "设备状态：$msg"
+                    )
+                )
+
+                if (response.code == 0) {
+                    Result.success("发送成功")
+                } else {
+                    Result.failure(Exception(response.message))
+                }
+
+            } catch (e: Exception) {
+                Result.failure(e)
+            }
+        }
+    }
+
+    suspend fun getCurtainMessage() : Result<List<MessageItem>>{
+        return withContext(Dispatchers.IO) {
+            try {
+                val response = api.getMessages(
+                    uid = "6bf8a0c06931436296f8845bf2069fc3",
+                    topic = "air002",
+                    type = 3,
+                    num = 5
+                )
+                Log.d(TAG,"request code is ==="+response.code)
+                Log.d(TAG,"request msg is ==="+response.data)
+                if (response.code == 0) {
+                    Result.success(response.data ?: emptyList())
+                } else {
+                    Result.failure(Exception(response.message))
+                }
+
+            } catch (e: Exception) {
+                Result.failure(e)
+            }
+        }
+    }
+
 }

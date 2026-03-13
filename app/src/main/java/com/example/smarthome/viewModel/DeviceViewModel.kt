@@ -22,7 +22,7 @@ class DeviceViewModel : ViewModel() {
         viewModelScope.launch {
             _uiState.value = "发送中..."
 
-            val result = repository.sendCommand(msg)
+            val result = repository.sendAirConditionerCommend(msg)
 
             result.onSuccess {
                 _uiState.value = it
@@ -34,7 +34,7 @@ class DeviceViewModel : ViewModel() {
 
     fun loadHistory() {
         viewModelScope.launch {
-            val result = repository.getLatestMessage()
+            val result = repository.getAirConditionerMessage()
 
             result.onSuccess {
                 _messages.value = it

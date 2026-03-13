@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="25dp"
+    android:height="25dp"
+    android:viewportWidth="25"
+    android:viewportHeight="25">
+
+    <!-- 圆角背景 -->
+    <path
+        android:pathData="M4,0h17a4,4 0 0 1 4,4v17a4,4 0 0 1 -4,4h-17a4,4 0 0 1 -4,-4v-17a4,4 0 0 1 4,-4z"
+        android:fillColor="#5C6BC0"/>
+
+    <!-- 左门 -->
+    <path
+        android:pathData="M7,6l4,2v10l-4,1z"
+        android:fillColor="#FFFFFF"/>
+
+    <!-- 右门 -->
+    <path
+        android:pathData="M18,6l-4,2v10l4,1z"
+        android:fillColor="#FFFFFF"/>
+
+    <!-- 左门把手 -->
+    <circle
+        android:cx="10"
+        android:cy="13"
+        android:r="0.7"
+        android:fillColor="#5C6BC0"/>
+
+    <!-- 右门把手 -->
+    <circle
+        android:cx="15"
+        android:cy="13"
+        android:r="0.7"
+        android:fillColor="#5C6BC0"/>
+
+</vector>
