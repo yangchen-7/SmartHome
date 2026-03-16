@@ -20,11 +20,11 @@
 
     <!-- Dashboard -->
     <LinearLayout
-        android:id="@+id/menu_dashboard"
+        android:id="@+id/menu_comeback"
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:gravity="center_vertical"
-        android:background="#FF534ABA"
+        android:background="@drawable/menu_selector"
         android:paddingStart="16dp">
 
         <ImageView
@@ -34,22 +34,24 @@
             android:layout_height="24dp"/>
 
         <TextView
+            android:id="@+id/come_home_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="回家模式"
             android:textSize="16sp"
-            android:textColor="@android:color/white"
+            android:textColor="@color/menu_text_color"
             android:layout_marginStart="16dp"/>
 
     </LinearLayout>
 
     <!-- Trading -->
     <LinearLayout
-        android:id="@+id/menu_trading"
+        android:id="@+id/menu_leave"
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:gravity="center_vertical"
         android:paddingStart="16dp"
+        android:background="@drawable/menu_selector"
         android:layout_marginTop="16dp">
 
         <ImageView
@@ -59,10 +61,12 @@
             android:layout_height="24dp"/>
 
         <TextView
+            android:id="@+id/leve_home_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="离家模式"
             android:textSize="16sp"
+            android:textColor="@color/menu_text_color"
             android:layout_marginStart="16dp"/>
 
     </LinearLayout>

@@ -1,7 +1,10 @@
 package com.example.smarthome.Activity
 
 import android.os.Bundle
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import com.example.smarthome.Fragment.DeviceFragment
 import com.example.smarthome.Fragment.HomeFragment
@@ -21,6 +24,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         bottomNav = findViewById(R.id.bottom_nav)
+        initDrawerLayout()
         // 默认显示首页
         if (savedInstanceState == null) {
             replaceFragment(HomeFragment())
@@ -43,12 +47,42 @@ class MainActivity : AppCompatActivity() {
                 else -> false
             }
         }
+
     }
 
     private fun replaceFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragment_container, fragment)
             .commit()
+    }
+
+    private fun initDrawerLayout(){
+        val drawerLayout = binding.drawerLayout
+        val comebackMenu = findViewById<LinearLayout>(R.id.menu_comeback)
+        val leaveMenu = findViewById<LinearLayout>(R.id.menu_leave)
+
+        // 默认选中回家模式
+        comebackMenu.setSelected(true);
+        leaveMenu.setSelected(false);
+
+        comebackMenu.setOnClickListener {
+            comebackMenu.isSelected = true
+            leaveMenu.isSelected = false
+            // TODO: 执行回家模式逻辑
+            // 例如：打开灯、打开空调
+
+            drawerLayout.closeDrawer(GravityCompat.START)
+        }
+
+        leaveMenu.setOnClickListener {
+            comebackMenu.isSelected = false
+            leaveMenu.isSelected = true
+
+            // TODO: 执行离家模式逻辑
+            // 例如：关闭所有设备
+
+            drawerLayout.closeDrawer(GravityCompat.START)
+        }
     }
 
 }

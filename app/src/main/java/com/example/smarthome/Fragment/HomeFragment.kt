@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import com.example.smarthome.Activity.LivingRoomActivity
 import com.example.smarthome.Adapter.OnRoomItemClickListener
 import com.example.smarthome.Adapter.RoomAdapter
@@ -50,6 +52,13 @@ class HomeFragment : Fragment(), OnRoomItemClickListener {
         // 初始化RecyclerView
         adapter = RoomAdapter(roomList,this)
         binding.rvRoomList.adapter = adapter
+
+        binding.SidebarButton.setOnClickListener {
+            val drawerLayout =
+                requireActivity().findViewById<DrawerLayout>(R.id.drawerLayout)
+
+            drawerLayout.openDrawer(GravityCompat.START)
+        }
 
     }
     

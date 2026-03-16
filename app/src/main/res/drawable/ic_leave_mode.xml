@@ -21,17 +21,17 @@
         android:fillColor="#FFFFFF"/>
 
     <!-- 左门把手 -->
-    <circle
-        android:cx="10"
-        android:cy="13"
-        android:r="0.7"
-        android:fillColor="#5C6BC0"/>
+    <path
+        android:fillColor="#5C6BC0"
+        android:pathData="M10,12.3
+                          a0.7,0.7 0 1,0 0,1.4
+                          a0.7,0.7 0 1,0 0,-1.4"/>
 
     <!-- 右门把手 -->
-    <circle
-        android:cx="15"
-        android:cy="13"
-        android:r="0.7"
-        android:fillColor="#5C6BC0"/>
+    <path
+        android:fillColor="#5C6BC0"
+        android:pathData="M15,12.3
+                          a0.7,0.7 0 1,0 0,1.4
+                          a0.7,0.7 0 1,0 0,-1.4"/>
 
 </vector>
