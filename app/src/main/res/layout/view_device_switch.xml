@@ -1,0 +1,49 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TextView
+        android:id="@+id/tvStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="开"
+        android:textSize="16sp"
+        android:textColor="#000"
+        android:layout_margin="16dp"/>
+
+    <Switch
+        android:id="@+id/switchBtn"
+        android:layout_width="50dp"
+        android:layout_height="30dp"
+        android:layout_margin="16dp"
+        android:layout_gravity="end"
+        android:thumb="@drawable/switch_thumb"
+        android:track="@drawable/switch_track"
+        android:showText="false"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="48dp"
+            android:layout_height="48dp"/>
+
+        <TextView
+            android:id="@+id/tvName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="空调"
+            android:textSize="16sp"
+            android:textColor="#333"/>
+
+        <TextView
+            android:id="@+id/tvTemp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="17°C"
+            android:textColor="#888"/>
+    </LinearLayout>
+
+</merge>

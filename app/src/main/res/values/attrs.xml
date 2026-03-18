@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="DeviceSwitchView">
+        <attr name="deviceName" format="string"/>
+        <attr name="deviceTemp" format="string"/>
+        <attr name="deviceIcon" format="reference"/>
+        <attr name="checked" format="boolean"/>
+    </declare-styleable>
+</resources>

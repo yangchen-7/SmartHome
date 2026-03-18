@@ -1,0 +1,103 @@
+package com.example.smarthome.view;
+
+import android.content.Context;
+import android.content.res.TypedArray;
+import android.graphics.Color;
+import android.util.AttributeSet;
+import android.view.LayoutInflater;
+import android.widget.ImageView;
+import android.widget.Switch;
+import android.widget.TextView;
+
+import androidx.cardview.widget.CardView;
+
+import com.example.smarthome.R;
+
+public class DeviceSwitchView extends CardView {
+
+    private TextView tvStatus, tvName, tvTemp;
+    private ImageView icon;
+    private Switch switchBtn;
+
+    private boolean isChecked = false;
+
+    public DeviceSwitchView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        init(context, attrs);
+    }
+
+    private void init(Context context, AttributeSet attrs) {
+
+        // 设置卡片样式
+        setRadius(20f);
+        setCardElevation(6f);
+        setUseCompatPadding(true);
+
+        LayoutInflater.from(context).inflate(R.layout.view_device_switch, this, true);
+
+        tvStatus = findViewById(R.id.tvStatus);
+        tvName = findViewById(R.id.tvName);
+        tvTemp = findViewById(R.id.tvTemp);
+        icon = findViewById(R.id.icon);
+        switchBtn = findViewById(R.id.switchBtn);
+
+        // 读取自定义属性
+        if (attrs != null) {
+            TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.DeviceSwitchView);
+
+            String name = ta.getString(R.styleable.DeviceSwitchView_deviceName);
+            String temp = ta.getString(R.styleable.DeviceSwitchView_deviceTemp);
+            int iconRes = ta.getResourceId(R.styleable.DeviceSwitchView_deviceIcon, 0);
+            isChecked = ta.getBoolean(R.styleable.DeviceSwitchView_checked, false);
+
+            tvName.setText(name);
+            tvTemp.setText(temp);
+            if (iconRes != 0) icon.setImageResource(iconRes);
+
+            ta.recycle();
+        }
+
+        // 初始化状态
+        setChecked(isChecked);
+
+        // Switch监听
+        switchBtn.setOnCheckedChangeListener((buttonView, checked) -> {
+            setChecked(checked);
+        });
+
+        // 点击整个卡片也能切换
+        setOnClickListener(v -> {
+            setChecked(!isChecked);
+        });
+    }
+
+    // 对外方法
+    public void setChecked(boolean checked) {
+        isChecked = checked;
+        switchBtn.setChecked(checked);
+
+        if (checked) {
+            tvStatus.setText("开");
+            setCardBackgroundColor(Color.WHITE);
+        } else {
+            tvStatus.setText("关");
+            setCardBackgroundColor(Color.parseColor("#EEEEEE"));
+        }
+    }
+
+    public boolean isChecked() {
+        return isChecked;
+    }
+
+    public void setName(String name) {
+        tvName.setText(name);
+    }
+
+    public void setTemp(String temp) {
+        tvTemp.setText(temp);
+    }
+
+    public void setIcon(int resId) {
+        icon.setImageResource(resId);
+    }
+}

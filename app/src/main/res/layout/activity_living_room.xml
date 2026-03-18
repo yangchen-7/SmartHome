@@ -5,6 +5,18 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@mipmap/living_room_background"
+    android:alpha="0.6"
+    android:foreground="#88000000"
     tools:context=".Activity.LivingRoomActivity">
+    
+    <com.example.smarthome.view.DeviceSwitchView
+        android:id="@+id/airConditioner"
+        android:layout_width="155dp"
+        android:layout_height="155dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="112dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
