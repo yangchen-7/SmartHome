@@ -7,5 +7,8 @@
     <string name="previous">Previous</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
-    <string name="living_room_title">卧室</string>
+    <string name="living_room_title">客厅</string>
+    <string name="air_conditioner">空调</string>
+    <string name="living_room_tv">电视</string>
+    <string name="living_room_lamp">灯光</string>
 </resources>

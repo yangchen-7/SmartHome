@@ -8,8 +8,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
+import com.example.smarthome.Model.Repository.BemfaRepository
 import com.example.smarthome.databinding.FragmentDeviceBinding
 import com.example.smarthome.viewModel.DeviceViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class DeviceFragment : Fragment() {
 
@@ -17,6 +21,7 @@ class DeviceFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var viewModel: DeviceViewModel
+    private val bemfaRepository = BemfaRepository()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,17 +40,17 @@ class DeviceFragment : Fragment() {
 
         // 开空调
         binding.btnOn.setOnClickListener {
-            viewModel.controlDevice("on")
+            viewModel.controlDevice("airConditioner", "on")
         }
 
         // 关空调
         binding.btnOff.setOnClickListener {
-            viewModel.controlDevice("off")
+            viewModel.controlDevice("airConditioner", "off")
         }
 
         // 获取历史
         binding.btnHistory.setOnClickListener {
-            viewModel.loadHistory()
+            loadAirConditionerHistory()
         }
 
         // 观察状态
@@ -53,13 +58,27 @@ class DeviceFragment : Fragment() {
             binding.tvResult.text = it
         }
 
-        //TODO 返回数据为空
-        // 观察历史消息
-        viewModel.messages.observe(viewLifecycleOwner) { list ->
-            val text = list.joinToString("\n") {
-                "消息: ${it.msg} 时间: ${it.time}"
+        // 观察空调状态
+        viewModel.airConditionerStatus.observe(viewLifecycleOwner) {
+            binding.tvResult.text = if (it) "空调已开启" else "空调已关闭"
+        }
+    }
+
+    // 加载空调历史记录
+    private fun loadAirConditionerHistory() {
+        CoroutineScope(Dispatchers.Main).launch {
+            bemfaRepository.getAirConditionerMessage().onSuccess { messages ->
+                if (messages.isNotEmpty()) {
+                    val text = messages.joinToString("\n") {
+                        "消息: ${it.msg} 时间: ${it.time}"
+                    }
+                    binding.tvHistory.text = text
+                } else {
+                    binding.tvHistory.text = "暂无历史记录"
+                }
+            }.onFailure {
+                binding.tvHistory.text = "获取历史记录失败"
             }
-            binding.tvHistory.text = text
         }
     }
 

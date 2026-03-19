@@ -16,6 +16,27 @@
         android:layout_height="155dp"
         android:layout_marginLeft="24dp"
         android:layout_marginTop="112dp"
+        android:background="@color/white"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+
+    <com.example.smarthome.view.DeviceSwitchView
+        android:id="@+id/Tv"
+        android:layout_width="155dp"
+        android:layout_height="155dp"
+        android:layout_marginLeft="196dp"
+        android:layout_marginTop="112dp"
+        android:background="#1B242D"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+
+    <com.example.smarthome.view.DeviceSwitchView
+        android:id="@+id/LivingLamp"
+        android:layout_width="155dp"
+        android:layout_height="155dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="283dp"
+        android:background="#1B242D"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"/>
 
