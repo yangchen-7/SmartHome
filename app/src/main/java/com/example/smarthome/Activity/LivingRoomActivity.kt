@@ -2,10 +2,15 @@ package com.example.smarthome.Activity
 
 import android.os.Bundle
 import android.widget.Toast
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import com.example.smarthome.Model.DeviceType
 import com.example.smarthome.R
 import com.example.smarthome.databinding.ActivityLivingRoomBinding
-import com.example.smarthome.viewmodel.LivingRoomViewModel
+import com.example.smarthome.viewModel.LivingRoomViewModel
+import kotlinx.coroutines.launch
 
 class LivingRoomActivity : BaseActivity() {
 
@@ -43,7 +48,7 @@ class LivingRoomActivity : BaseActivity() {
         // 空调开关
         binding.airConditioner.setOnCheckedChangeListener {
             viewModel.controlDevice(
-                LivingRoomViewModel.DeviceType.AIR_CONDITIONER,
+               DeviceType.AIR_CONDITIONER,
                 it
             )
         }
@@ -51,7 +56,7 @@ class LivingRoomActivity : BaseActivity() {
         // 电视开关
         binding.Tv.setOnCheckedChangeListener {
             viewModel.controlDevice(
-                LivingRoomViewModel.DeviceType.TV,
+                DeviceType.TV,
                 it
             )
         }
@@ -59,7 +64,7 @@ class LivingRoomActivity : BaseActivity() {
         // 客厅灯开关
         binding.LivingLamp.setOnCheckedChangeListener {
             viewModel.controlDevice(
-                LivingRoomViewModel.DeviceType.LIVING_LAMP,
+                DeviceType.LIVING_LAMP,
                 it
             )
         }
@@ -68,43 +73,43 @@ class LivingRoomActivity : BaseActivity() {
     /**
      * 数据驱动UI（核心）
      */
+
     private fun observeData() {
 
-        // ===== 设备状态 =====
-        viewModel.deviceStateMap.observe(this) { map ->
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
 
-            map[LivingRoomViewModel.DeviceType.AIR_CONDITIONER]?.let {
-                binding.airConditioner.setChecked(it)
-            }
+                // 设备状态
+                launch {
+                    viewModel.deviceStateMap.collect { map ->
+                        map[DeviceType.AIR_CONDITIONER]?.let {
+                            binding.airConditioner.setChecked(it)
+                        }
+                        map[DeviceType.TV]?.let {
+                            binding.Tv.setChecked(it)
+                        }
+                        map[DeviceType.LIVING_LAMP]?.let {
+                            binding.LivingLamp.setChecked(it)
+                        }
+                    }
+                }
 
-            map[LivingRoomViewModel.DeviceType.TV]?.let {
-                binding.Tv.setChecked(it)
-            }
-
-            map[LivingRoomViewModel.DeviceType.LIVING_LAMP]?.let {
-                binding.LivingLamp.setChecked(it)
+                // UI 请求状态
+                launch {
+                    viewModel.uiState.collect { state ->
+                        when (state) {
+                            is LivingRoomViewModel.UiState.Error ->
+                                Toast.makeText(this@LivingRoomActivity, "失败：${state.error}", Toast.LENGTH_SHORT).show()
+                            else -> {}
+                        }
+                    }
+                }
             }
         }
+    }
 
-        // ===== UI状态（请求状态）=====
-        viewModel.uiState.observe(this) { state ->
-            when (state) {
-
-                is LivingRoomViewModel.UiState.Loading -> {
-                    // 可以换成 ProgressBar
-                    Toast.makeText(this, "发送中...", Toast.LENGTH_SHORT).show()
-                }
-
-                is LivingRoomViewModel.UiState.Success -> {
-                    Toast.makeText(this, state.msg, Toast.LENGTH_SHORT).show()
-                }
-
-                is LivingRoomViewModel.UiState.Error -> {
-                    Toast.makeText(this, "失败：${state.error}", Toast.LENGTH_SHORT).show()
-                }
-
-                else -> {}
-            }
-        }
+    override fun onResume() {
+        super.onResume()
+        viewModel.loadDeviceStatus()
     }
 }

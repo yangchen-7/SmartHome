@@ -1,21 +1,23 @@
-package com.example.smarthome.viewmodel
+package com.example.smarthome.viewModel
 
-import androidx.lifecycle.*
+import android.util.Log
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.smarthome.Model.DeviceType
 import com.example.smarthome.Model.Repository.BemfaRepository
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class LivingRoomViewModel : ViewModel() {
 
     private val repository = BemfaRepository()
+    private val TAG = "LivingRoomViewModel"
 
     // ================== 设备类型 ==================
-    enum class DeviceType {
-        AIR_CONDITIONER,
-        TV,
-        LIVING_LAMP
-    }
 
-    // ================== UI状态 ==================
+    // ================== UI 状态 ==================
     sealed class UiState {
         object Idle : UiState()
         object Loading : UiState()
@@ -23,87 +25,82 @@ class LivingRoomViewModel : ViewModel() {
         data class Error(val error: String) : UiState()
     }
 
-    private val _uiState = MutableLiveData<UiState>(UiState.Idle)
-    val uiState: LiveData<UiState> = _uiState
+    // **UI 状态 Flow**
+    private val _uiState = MutableStateFlow<UiState>(UiState.Idle)
+    val uiState: StateFlow<UiState> = _uiState.asStateFlow()
 
-    // ================== 设备状态（核心） ==================
-    private val _deviceStateMap = MutableLiveData<Map<DeviceType, Boolean>>()
-    val deviceStateMap: LiveData<Map<DeviceType, Boolean>> = _deviceStateMap
-
-    // 内部可变Map
+    // ================== 设备状态（Flow，不会丢状态） ==================
     private val currentStateMap = mutableMapOf<DeviceType, Boolean>()
 
-    // ================== 控制设备 ==================
-    fun controlDevice(device: DeviceType, isOn: Boolean) {
+    private val _deviceStateMap = MutableStateFlow<Map<DeviceType, Boolean>>(emptyMap())
+    val deviceStateMap: StateFlow<Map<DeviceType, Boolean>> = _deviceStateMap.asStateFlow()
 
+
+    //ViewModel 初始化时自动加载一次状态
+    init {
+        loadDeviceStatus()
+    }
+
+
+    // ================== 统一请求控制设备 ==================
+    fun controlDevice(device: DeviceType, isOn: Boolean) {
         viewModelScope.launch {
 
             _uiState.value = UiState.Loading
-
             val status = if (isOn) "on" else "off"
 
             val result = when (device) {
                 DeviceType.AIR_CONDITIONER -> repository.sendAirConditionerCommend(status)
                 DeviceType.TV -> repository.sendTvCommend(status)
                 DeviceType.LIVING_LAMP -> repository.sendLivingLampCommend(status)
+                // 新增 else 分支：兜底非客厅设备，抛明确异常（避免误调用）
+                else -> {
+                    Result.failure(IllegalArgumentException("LivingRoomViewModel 不支持控制设备：$device"))
+                }
             }
 
             result.onSuccess {
                 _uiState.value = UiState.Success(it)
-
-                // 更新本地状态
-                currentStateMap[device] = isOn
-                _deviceStateMap.value = currentStateMap.toMap()
+                updateState(device, isOn)
             }.onFailure {
                 _uiState.value = UiState.Error(it.message ?: "未知错误")
             }
         }
     }
 
-    // ================== 初始化加载 ==================
+
+    // ================== 加载设备状态（从服务器） ==================
     fun loadDeviceStatus() {
-        loadAirConditioner()
-        loadTv()
-        loadLamp()
+        currentStateMap.clear()  // 清空旧状态
+        _deviceStateMap.value = emptyMap()
+        loadSingle(DeviceType.AIR_CONDITIONER) { repository.getAirConditionerMessage() }
+        loadSingle(DeviceType.TV) { repository.getTVMessage() }
+        loadSingle(DeviceType.LIVING_LAMP) { repository.getLivingLampMessage() }
     }
 
-    private fun loadAirConditioner() {
+    private fun loadSingle(
+        device: DeviceType,
+        request: suspend () -> Result<List<com.example.smarthome.Model.MessageItem>>
+    ) {
         viewModelScope.launch {
-            val result = repository.getAirConditionerMessage()
-            result.onSuccess {
-                if (it.isNotEmpty()) {
-                    val isOn = it[0].msg == "on"
-                    updateState(DeviceType.AIR_CONDITIONER, isOn)
+            val result = request()
+            result.onSuccess { messages ->
+                Log.d(TAG, "设备 $device 获取到 ${messages.size} 条消息")
+                if (messages.isNotEmpty()) {
+                    val message = messages[0]
+                    Log.d(TAG, "设备 $device 信息: msg=${message.msg}, time=${message.time}, unix=${message.unix}")
+                    val isOn = message.msg == "on"
+                    updateState(device, isOn)
+                } else {
+                    Log.w(TAG, "设备 $device 没有消息数据")
                 }
+            }.onFailure {
+                Log.e(TAG, "设备 $device 获取失败: ${it.message}", it)
             }
         }
     }
 
-    private fun loadTv() {
-        viewModelScope.launch {
-            val result = repository.getTVMessage()
-            result.onSuccess {
-                if (it.isNotEmpty()) {
-                    val isOn = it[0].msg == "on"
-                    updateState(DeviceType.TV, isOn)
-                }
-            }
-        }
-    }
-
-    private fun loadLamp() {
-        viewModelScope.launch {
-            val result = repository.getLivingLampMessage()
-            result.onSuccess {
-                if (it.isNotEmpty()) {
-                    val isOn = it[0].msg == "on"
-                    updateState(DeviceType.LIVING_LAMP, isOn)
-                }
-            }
-        }
-    }
-
-    // ================== 更新状态统一入口 ==================
+    // ================== 统一更新内部状态并通知UI ==================
     private fun updateState(device: DeviceType, isOn: Boolean) {
         currentStateMap[device] = isOn
         _deviceStateMap.value = currentStateMap.toMap()

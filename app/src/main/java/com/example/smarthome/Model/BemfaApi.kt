@@ -12,12 +12,11 @@ interface BemfaApi {
         @Body request: PushRequest
     ): BaseResponse<Int>
 
-    // 获取消息
+    // 获取消息 - 使用具体的类型避免泛型擦除问题
     @GET("va/getmsg")
     suspend fun getMessages(
         @Query("uid") uid: String,
         @Query("topic") topic: String,
         @Query("type") type: Int,
-        @Query("num") num: Int = 1
     ): BaseResponse<List<MessageItem>>
 }

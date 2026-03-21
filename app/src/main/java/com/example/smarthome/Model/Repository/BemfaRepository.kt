@@ -26,7 +26,7 @@ class BemfaRepository {
                         wemsg = "设备状态：$msg"
                     )
                 )
-
+                Log.d(TAG, "空调发送响应: code=${response.code}, message=${response.message}, data=${response.data}")
                 if (response.code == 0) {
                     Result.success("发送成功")
                 } else {
@@ -34,6 +34,7 @@ class BemfaRepository {
                 }
 
             } catch (e: Exception) {
+                Log.e(TAG, "空调发送异常", e)
                 Result.failure(e)
             }
         }
@@ -48,11 +49,11 @@ class BemfaRepository {
                 val response = api.getMessages(
                     uid = "6bf8a0c06931436296f8845bf2069fc3",
                     topic = "at002",
-                    type = 3,
-                    num = 5
+                    type = 3
                 )
-                Log.d(TAG,"request code is ==="+response.code)
-                Log.d(TAG,"request msg is ==="+response.data)
+                Log.d(TAG, "空调完整响应: $response")
+                Log.d(TAG, "空调响应: code=${response.code}, message=${response.message}, data=${response.data}")
+                Log.d(TAG, "空调data类型: ${response.data?.javaClass}")
                 if (response.code == 0) {
                     Result.success(response.data ?: emptyList())
                 } else {
@@ -60,6 +61,7 @@ class BemfaRepository {
                 }
 
             } catch (e: Exception) {
+                Log.e(TAG, "空调获取异常", e)
                 Result.failure(e)
             }
         }
@@ -101,8 +103,7 @@ class BemfaRepository {
                 val response = api.getMessages(
                     uid = "6bf8a0c06931436296f8845bf2069fc3",
                     topic = "water002",
-                    type = 3,
-                    num = 5
+                    type = 3
                 )
                 Log.d(TAG,"request code is ==="+response.code)
                 Log.d(TAG,"request msg is ==="+response.data)
@@ -130,7 +131,7 @@ class BemfaRepository {
                         wemsg = "设备状态：$msg"
                     )
                 )
-
+                Log.d(TAG, "电视发送响应: code=${response.code}, message=${response.message}, data=${response.data}")
                 if (response.code == 0) {
                     Result.success("发送成功")
                 } else {
@@ -138,6 +139,7 @@ class BemfaRepository {
                 }
 
             } catch (e: Exception) {
+                Log.e(TAG, "电视发送异常", e)
                 Result.failure(e)
             }
         }
@@ -148,12 +150,10 @@ class BemfaRepository {
             try {
                 val response = api.getMessages(
                     uid = "6bf8a0c06931436296f8845bf2069fc3",
-                    topic = "water002",
-                    type = 3,
-                    num = 5
+                    topic = "TV002",
+                    type = 3
                 )
-                Log.d(TAG,"request code is ==="+response.code)
-                Log.d(TAG,"request msg is ==="+response.data)
+                Log.d(TAG, "电视响应: code=${response.code}, message=${response.message}, data=${response.data}")
                 if (response.code == 0) {
                     Result.success(response.data ?: emptyList())
                 } else {
@@ -161,6 +161,7 @@ class BemfaRepository {
                 }
 
             } catch (e: Exception) {
+                Log.e(TAG, "电视获取异常", e)
                 Result.failure(e)
             }
         }
@@ -178,7 +179,7 @@ class BemfaRepository {
                         wemsg = "设备状态：$msg"
                     )
                 )
-
+                Log.d(TAG, "客厅灯发送响应: code=${response.code}, message=${response.message}, data=${response.data}")
                 if (response.code == 0) {
                     Result.success("发送成功")
                 } else {
@@ -186,6 +187,7 @@ class BemfaRepository {
                 }
 
             } catch (e: Exception) {
+                Log.e(TAG, "客厅灯发送异常", e)
                 Result.failure(e)
             }
         }
@@ -197,11 +199,9 @@ class BemfaRepository {
                 val response = api.getMessages(
                     uid = "6bf8a0c06931436296f8845bf2069fc3",
                     topic = "lamp002",
-                    type = 3,
-                    num = 5
+                    type = 3
                 )
-                Log.d(TAG,"request code is ==="+response.code)
-                Log.d(TAG,"request msg is ==="+response.data)
+                Log.d(TAG, "客厅灯响应: code=${response.code}, message=${response.message}, data=${response.data}")
                 if (response.code == 0) {
                     Result.success(response.data ?: emptyList())
                 } else {
@@ -209,6 +209,7 @@ class BemfaRepository {
                 }
 
             } catch (e: Exception) {
+                Log.e(TAG, "客厅灯获取异常", e)
                 Result.failure(e)
             }
         }
@@ -245,8 +246,7 @@ class BemfaRepository {
                 val response = api.getMessages(
                     uid = "6bf8a0c06931436296f8845bf2069fc3",
                     topic = "fant002",
-                    type = 3,
-                    num = 5
+                    type = 3
                 )
                 Log.d(TAG,"request code is ==="+response.code)
                 Log.d(TAG,"request msg is ==="+response.data)
@@ -293,8 +293,7 @@ class BemfaRepository {
                 val response = api.getMessages(
                     uid = "6bf8a0c06931436296f8845bf2069fc3",
                     topic = "air002",
-                    type = 3,
-                    num = 5
+                    type = 3
                 )
                 Log.d(TAG,"request code is ==="+response.code)
                 Log.d(TAG,"request msg is ==="+response.data)

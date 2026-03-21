@@ -13,6 +13,11 @@ import androidx.cardview.widget.CardView;
 
 import com.example.smarthome.R;
 
+/**
+ * 最终版核心原则：
+ * —— UI 更新用 setChecked()，不会触发业务回调
+ * —— 用户操作用 setCheckedByUser()，会触发业务回调
+ */
 public class DeviceSwitchView extends CardView {
 
     private TextView tvStatus, tvName, tvTemp;
@@ -39,7 +44,6 @@ public class DeviceSwitchView extends CardView {
 
     private void init(Context context, AttributeSet attrs) {
 
-        // 卡片样式
         setRadius(20f);
         setCardElevation(6f);
         setUseCompatPadding(true);
@@ -52,7 +56,7 @@ public class DeviceSwitchView extends CardView {
         icon = findViewById(R.id.icon);
         switchBtn = findViewById(R.id.switchBtn);
 
-        // ⭐ 读取自定义属性
+        // 读取自定义属性
         if (attrs != null) {
             TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.DeviceSwitchView);
 
@@ -68,47 +72,31 @@ public class DeviceSwitchView extends CardView {
             ta.recycle();
         }
 
-        // 初始化监听
-        setupSwitchListener();
+        // 初始化真正的 Switch 监听（用户操作）
+        setupUserSwitchListener();
 
-        // 初始化UI
         updateUI();
 
-        //点击整个卡片也能切换
-        setOnClickListener(v -> toggle());
+        // 点击整个卡片 = 用户行为
+        setOnClickListener(v -> setCheckedByUser(!isChecked));
     }
 
     /**
-     * Switch监听（单独抽出来，方便重绑）
+     * Switch 用户监听
      */
-    private void setupSwitchListener() {
+    private void setupUserSwitchListener() {
         switchBtn.setOnCheckedChangeListener((buttonView, checked) -> {
 
-            // 防止重复触发
+            // 如果状态没变，就不回调
             if (this.isChecked == checked) return;
 
-            this.isChecked = checked;
-            updateUI();
-
-            if (onCheckedChangeListener != null) {
-                onCheckedChangeListener.onCheckedChanged(checked);
-            }
+            // 用户行为
+            setCheckedByUser(checked);
         });
     }
 
     /**
-     * 卡片点击切换
-     */
-    private void toggle() {
-        setChecked(!isChecked);
-
-        if (onCheckedChangeListener != null) {
-            onCheckedChangeListener.onCheckedChanged(isChecked);
-        }
-    }
-
-    /**
-     * 更新UI
+     * 更新UI（只负责显示）
      */
     private void updateUI() {
         if (isChecked) {
@@ -123,22 +111,44 @@ public class DeviceSwitchView extends CardView {
     // ================== 对外API ==================
 
     /**
-     * 设置开关状态（已防止死循环）
+     * ★★★★★ UI 更新调用这个，不触发监听器
      */
     public void setChecked(boolean checked) {
         if (this.isChecked == checked) return;
 
         this.isChecked = checked;
 
-        // 移除监听，防止回调
+        // 不触发监听器
         switchBtn.setOnCheckedChangeListener(null);
-
         switchBtn.setChecked(checked);
-
-        // 恢复监听
-        setupSwitchListener();
+        switchBtn.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            setCheckedByUser(isChecked); // 恢复用户监听
+        });
 
         updateUI();
+    }
+
+    /**
+     * ★★★★★ 用户操作必须用这个，会触发业务逻辑
+     */
+    public void setCheckedByUser(boolean checked) {
+        if (this.isChecked == checked) return;
+
+        this.isChecked = checked;
+
+        // UI 同步
+        switchBtn.setOnCheckedChangeListener(null);
+        switchBtn.setChecked(checked);
+        switchBtn.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            setCheckedByUser(isChecked);
+        });
+
+        updateUI();
+
+        // 用户行为 → 通知业务层
+        if (onCheckedChangeListener != null) {
+            onCheckedChangeListener.onCheckedChanged(checked);
+        }
     }
 
     public boolean isChecked() {
@@ -157,21 +167,9 @@ public class DeviceSwitchView extends CardView {
         icon.setImageResource(resId);
     }
 
-    /**
-     * 设置监听
-     */
     public void setOnCheckedChangeListener(OnCheckedChangeListener listener) {
         this.onCheckedChangeListener = listener;
     }
-
-    /**
-     * 手动触发点击（可选）
-     */
-    public void performToggle() {
-        toggle();
-    }
-
-    // ================== 接口 ==================
 
     public interface OnCheckedChangeListener {
         void onCheckedChanged(boolean isChecked);
