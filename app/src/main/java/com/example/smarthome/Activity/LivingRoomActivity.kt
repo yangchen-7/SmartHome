@@ -44,6 +44,9 @@ class LivingRoomActivity : BaseActivity() {
         binding.airConditioner.setName(getString(R.string.air_conditioner))
         binding.Tv.setName(getString(R.string.living_room_tv))
         binding.LivingLamp.setName(getString(R.string.living_room_lamp))
+        binding.airConditioner.setDeviceType(DeviceType.AIR_CONDITIONER)
+        binding.Tv.setDeviceType(DeviceType.TV)
+        binding.LivingLamp.setDeviceType(DeviceType.LIVING_LAMP)
 
         // 空调开关
         binding.airConditioner.setOnCheckedChangeListener {

@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
 
+import com.example.smarthome.Model.DeviceType;
 import com.example.smarthome.R;
 
 /**
@@ -23,6 +24,7 @@ public class DeviceSwitchView extends CardView {
     private TextView tvStatus, tvName, tvTemp;
     private ImageView icon;
     private Switch switchBtn;
+    private DeviceType deviceType;
 
     private boolean isChecked = false;
     private OnCheckedChangeListener onCheckedChangeListener;
@@ -44,7 +46,7 @@ public class DeviceSwitchView extends CardView {
 
     private void init(Context context, AttributeSet attrs) {
 
-        setRadius(20f);
+        setRadius(50f);
         setCardElevation(6f);
         setUseCompatPadding(true);
 
@@ -95,16 +97,55 @@ public class DeviceSwitchView extends CardView {
         });
     }
 
+    public void setDeviceType(DeviceType type) {
+        this.deviceType = type;
+        updateUI(); // 设置设备类型后更新UI
+    }
+
     /**
      * 更新UI（只负责显示）
      */
     private void updateUI() {
+        if (deviceType == null) {
+            android.util.Log.d("DeviceSwitchView", "deviceType is null");
+            return;
+        }
         if (isChecked) {
             tvStatus.setText("开");
+            tvStatus.setTextColor(Color.BLACK);
+            tvName.setTextColor(Color.BLACK);
             setCardBackgroundColor(Color.WHITE);
+            switch (deviceType){
+                case AIR_CONDITIONER:
+                    setIcon(R.drawable.ic_aircon_black);
+                    break;
+                case TV:
+                    setIcon(R.drawable.ic_tv_black);
+                    break;
+                case LIVING_LAMP:
+                    setIcon(R.drawable.ic_lamp_black);
+                    break;
+                default:
+                    break;
+            }
         } else {
             tvStatus.setText("关");
-            setCardBackgroundColor(Color.parseColor("#EEEEEE"));
+            tvStatus.setTextColor(Color.WHITE);
+            tvName.setTextColor(Color.WHITE);
+            setCardBackgroundColor(Color.BLACK);
+            switch (deviceType){
+                case AIR_CONDITIONER:
+                    setIcon(R.drawable.ic_aircon_white);
+                    break;
+                case TV:
+                    setIcon(R.drawable.ic_tv_white);
+                    break;
+                case LIVING_LAMP:
+                    setIcon(R.drawable.ic_lamp_white);
+                    break;
+                default:
+                    break;
+            }
         }
     }
 

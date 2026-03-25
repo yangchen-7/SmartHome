@@ -8,19 +8,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.example.smarthome.R
+import com.example.smarthome.databinding.FragmentMyBinding
 
 class MyFragment : Fragment() {
 
+    private lateinit var binding : FragmentMyBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val textView = TextView(requireContext())
-        textView.text = "我的页面"
-        textView.textSize = 24f
-        textView.gravity = Gravity.CENTER
-        return textView
+       binding = FragmentMyBinding.inflate(inflater,container,false)
+        return binding.root
     }
 
 

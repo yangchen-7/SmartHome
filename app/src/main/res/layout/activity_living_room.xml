@@ -6,8 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@mipmap/living_room_background"
-    android:alpha="0.6"
-    android:foreground="#88000000"
     tools:context=".Activity.LivingRoomActivity">
     
     <com.example.smarthome.view.DeviceSwitchView
