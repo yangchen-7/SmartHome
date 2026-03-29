@@ -41,8 +41,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="302dp"
-        app:itemText="编辑个人资料"
-        app:itemIcon="@drawable/ic_edit"
+        app:itemText="设置"
+        app:itemIcon="@drawable/ic_setting"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
@@ -52,8 +52,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="374dp"
-        app:itemText="编辑个人资料"
-        app:itemIcon="@drawable/ic_edit"
+        app:itemText="反馈与建议"
+        app:itemIcon="@drawable/ic_advance"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
@@ -63,8 +63,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="470dp"
-        app:itemText="编辑个人资料"
-        app:itemIcon="@drawable/ic_edit"
+        app:itemText="退出登录"
+        app:itemIcon="@drawable/ic_logout"
+        app:itemTextColor="#FF8A5D"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>

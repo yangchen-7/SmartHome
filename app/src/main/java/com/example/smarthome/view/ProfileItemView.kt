@@ -28,8 +28,12 @@ class ProfileItemView @JvmOverloads constructor(
 
             val text = ta.getString(R.styleable.ProfileItemView_itemText)
             val iconRes = ta.getResourceId(R.styleable.ProfileItemView_itemIcon, 0)
+            val textColor = ta.getColor(
+                R.styleable.ProfileItemView_itemTextColor,
+                binding.title.currentTextColor)
 
             binding.title.text = text
+            binding.title.setTextColor(textColor)
 
             if (iconRes != 0) {
                 binding.icon.setImageResource(iconRes)

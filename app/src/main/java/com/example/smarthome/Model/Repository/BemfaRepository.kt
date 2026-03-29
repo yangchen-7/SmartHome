@@ -66,6 +66,30 @@ class BemfaRepository {
             }
         }
     }
+
+    /**
+     * 获取空调是否在线
+     * */
+    suspend fun getAirConditionerOnline(): Result<Boolean> {
+        return withContext(Dispatchers.IO) {
+            try {
+                val response = api.getOnline(
+                    uid = "6bf8a0c06931436296f8845bf2069fc3",
+                    topic = "at002",
+                    type = 3
+                )
+                if (response.code == 0) {
+                    Result.success(response.data ?: false)
+                } else {
+                    Result.failure(Exception(response.message))
+                }
+
+            } catch (e: Exception) {
+                Result.failure(e)
+            }
+        }
+    }
+
     /**
      * 改变热水器状态
      * */
@@ -119,6 +143,28 @@ class BemfaRepository {
         }
     }
 
+    /**
+     * 获取热水器是否在线
+     * */
+    suspend fun getWaterHeaterOnline(): Result<Boolean> {
+        return withContext(Dispatchers.IO) {
+            try {
+                val response = api.getOnline(
+                    uid = "6bf8a0c06931436296f8845bf2069fc3",
+                    topic = "water002",
+                    type = 3
+                )
+                if (response.code == 0) {
+                    Result.success(response.data ?: false)
+                } else {
+                    Result.failure(Exception(response.message))
+                }
+
+            } catch (e: Exception) {
+                Result.failure(e)
+            }
+        }
+    }
     suspend fun sendTvCommend(msg : String) : Result<String>{
         return withContext(Dispatchers.IO){
             try {
@@ -162,6 +208,29 @@ class BemfaRepository {
 
             } catch (e: Exception) {
                 Log.e(TAG, "电视获取异常", e)
+                Result.failure(e)
+            }
+        }
+    }
+
+    /**
+     * 获取电视是否在线
+     * */
+    suspend fun getTVOnline(): Result<Boolean> {
+        return withContext(Dispatchers.IO) {
+            try {
+                val response = api.getOnline(
+                    uid = "6bf8a0c06931436296f8845bf2069fc3",
+                    topic = "TV002",
+                    type = 3
+                )
+                if (response.code == 0) {
+                    Result.success(response.data ?: false)
+                } else {
+                    Result.failure(Exception(response.message))
+                }
+
+            } catch (e: Exception) {
                 Result.failure(e)
             }
         }
@@ -215,6 +284,29 @@ class BemfaRepository {
         }
     }
 
+    /**
+     * 获取客厅灯光是否在线
+     * */
+    suspend fun getLivingLampOnline(): Result<Boolean> {
+        return withContext(Dispatchers.IO) {
+            try {
+                val response = api.getOnline(
+                    uid = "6bf8a0c06931436296f8845bf2069fc3",
+                    topic = "lamp002",
+                    type = 3
+                )
+                if (response.code == 0) {
+                    Result.success(response.data ?: false)
+                } else {
+                    Result.failure(Exception(response.message))
+                }
+
+            } catch (e: Exception) {
+                Result.failure(e)
+            }
+        }
+    }
+
     suspend fun sendBadRoomLampCommend(msg : String) : Result<String>{
         return withContext(Dispatchers.IO){
             try {
@@ -262,6 +354,29 @@ class BemfaRepository {
         }
     }
 
+    /**
+     * 获取卧室灯光是否在线
+     * */
+    suspend fun getBadRoomLampOnline(): Result<Boolean> {
+        return withContext(Dispatchers.IO) {
+            try {
+                val response = api.getOnline(
+                    uid = "6bf8a0c06931436296f8845bf2069fc3",
+                    topic = "fant002",
+                    type = 3
+                )
+                if (response.code == 0) {
+                    Result.success(response.data ?: false)
+                } else {
+                    Result.failure(Exception(response.message))
+                }
+
+            } catch (e: Exception) {
+                Result.failure(e)
+            }
+        }
+    }
+
     suspend fun sendCurtainCommend(msg : String) : Result<String>{
         return withContext(Dispatchers.IO){
             try {
@@ -299,6 +414,29 @@ class BemfaRepository {
                 Log.d(TAG,"request msg is ==="+response.data)
                 if (response.code == 0) {
                     Result.success(response.data ?: emptyList())
+                } else {
+                    Result.failure(Exception(response.message))
+                }
+
+            } catch (e: Exception) {
+                Result.failure(e)
+            }
+        }
+    }
+
+    /**
+     * 获取窗帘是否在线
+     * */
+    suspend fun getCurtainOnline(): Result<Boolean> {
+        return withContext(Dispatchers.IO) {
+            try {
+                val response = api.getOnline(
+                    uid = "6bf8a0c06931436296f8845bf2069fc3",
+                    topic = "air002",
+                    type = 3
+                )
+                if (response.code == 0) {
+                    Result.success(response.data ?: false)
                 } else {
                     Result.failure(Exception(response.message))
                 }

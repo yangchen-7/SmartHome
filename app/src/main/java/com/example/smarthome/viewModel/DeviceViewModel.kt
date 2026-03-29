@@ -1,97 +1,59 @@
 package com.example.smarthome.viewModel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.smarthome.Model.MessageItem
+import com.example.smarthome.Model.DeviceType
 import com.example.smarthome.Model.Repository.BemfaRepository
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class DeviceViewModel : ViewModel() {
 
     private val repository = BemfaRepository()
+    private val TAG = "DeviceViewModel"
 
-    // UI状态
-    private val _uiState = MutableLiveData<String>()
-    val uiState: LiveData<String> = _uiState
+    private val currentOnlineMap = mutableMapOf<DeviceType, Boolean>()
+    private val _deviceOnlineMap = MutableStateFlow<Map<DeviceType, Boolean>>(emptyMap())
+    val deviceOnlineMap: StateFlow<Map<DeviceType, Boolean>> = _deviceOnlineMap.asStateFlow()
 
-    // 设备状态
-    private val _airConditionerStatus = MutableLiveData<Boolean>()
-    val airConditionerStatus: LiveData<Boolean> = _airConditionerStatus
+    init {
+        loadDeviceOnlineStatus()
+    }
 
-    private val _tvStatus = MutableLiveData<Boolean>()
-    val tvStatus: LiveData<Boolean> = _tvStatus
+    fun loadDeviceOnlineStatus() {
+        currentOnlineMap.clear()
+        _deviceOnlineMap.value = emptyMap()
+        loadOnlineSingle(DeviceType.AIR_CONDITIONER) { repository.getAirConditionerOnline() }
+        loadOnlineSingle(DeviceType.TV) { repository.getTVOnline() }
+        loadOnlineSingle(DeviceType.LIVING_LAMP) { repository.getLivingLampOnline() }
+        loadOnlineSingle(DeviceType.WATER_HEATER) { repository.getWaterHeaterOnline() }
+        loadOnlineSingle(DeviceType.BEDROOM_LAMP) { repository.getBadRoomLampOnline() }
+        loadOnlineSingle(DeviceType.CURTAIN) { repository.getCurtainOnline() }
+    }
 
-    private val _livingLampStatus = MutableLiveData<Boolean>()
-    val livingLampStatus: LiveData<Boolean> = _livingLampStatus
 
-    // 控制设备
-    fun controlDevice(deviceType: String, status: String) {
+    private fun loadOnlineSingle(
+        device: DeviceType,
+        request: suspend () -> Result<Boolean>
+    ) {
         viewModelScope.launch {
-            _uiState.value = "发送中..."
-
-            val result = when (deviceType) {
-                "airConditioner" -> repository.sendAirConditionerCommend(status)
-                "tv" -> repository.sendTvCommend(status)
-                "livingLamp" -> repository.sendLivingLampCommend(status)
-                else -> null
-            }
-
-            result?.onSuccess {
-                _uiState.value = it
-                // 更新本地状态
-                when (deviceType) {
-                    "airConditioner" -> _airConditionerStatus.value = status == "on"
-                    "tv" -> _tvStatus.value = status == "on"
-                    "livingLamp" -> _livingLampStatus.value = status == "on"
-                }
-            }?.onFailure {
-                _uiState.value = "失败：${it.message}"
+            val result = request()
+            result.onSuccess { isOnline ->
+                Log.d(TAG, "设备 $device 在线状态: $isOnline")
+                updateOnlineState(device, isOnline)
+            }.onFailure {
+                Log.e(TAG, "设备 $device 在线状态获取失败: ${it.message}", it)
+                updateOnlineState(device, false)
             }
         }
     }
 
-    // 加载设备状态
-    fun loadDeviceStatus() {
-        loadAirConditionerStatus()
-        loadTvStatus()
-        loadLivingLampStatus()
-    }
 
-    // 加载空调状态
-    private fun loadAirConditionerStatus() {
-        viewModelScope.launch {
-            val result = repository.getAirConditionerMessage()
-            result.onSuccess {
-                if (it.isNotEmpty()) {
-                    _airConditionerStatus.value = it[0].msg == "on"
-                }
-            }
-        }
-    }
-
-    // 加载电视状态
-    private fun loadTvStatus() {
-        viewModelScope.launch {
-            val result = repository.getTVMessage()
-            result.onSuccess {
-                if (it.isNotEmpty()) {
-                    _tvStatus.value = it[0].msg == "on"
-                }
-            }
-        }
-    }
-
-    // 加载客厅灯状态
-    private fun loadLivingLampStatus() {
-        viewModelScope.launch {
-            val result = repository.getLivingLampMessage()
-            result.onSuccess {
-                if (it.isNotEmpty()) {
-                    _livingLampStatus.value = it[0].msg == "on"
-                }
-            }
-        }
+    private fun updateOnlineState(device: DeviceType, isOnline: Boolean) {
+        currentOnlineMap[device] = isOnline
+        _deviceOnlineMap.value = currentOnlineMap.toMap()
     }
 }

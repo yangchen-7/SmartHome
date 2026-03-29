@@ -3,38 +3,82 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
+    android:background="#1B242D"
     tools:context=".Fragment.DeviceFragment">
 
-    <Button
-        android:id="@+id/btnOn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="开空调"/>
-
-    <Button
-        android:id="@+id/btnOff"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="关空调"/>
-
-    <Button
-        android:id="@+id/btnHistory"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="获取历史"/>
-
-
     <TextView
-        android:id="@+id/tvResult"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_marginTop="44dp"
+        android:gravity="center_horizontal"
+        android:text="全部设备"
+        android:textColor="@color/white"
+        android:textSize="28sp"/>
 
-    <TextView
-        android:id="@+id/tvHistory"
+    <GridLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:columnCount="3"
+        android:padding="25dp">
 
+        <com.example.smarthome.view.DeviceCardView
+            android:id="@+id/cvTempSensor"
+            android:layout_width="85dp"
+            android:layout_height="136dp"
+            android:layout_margin="8dp"
+            app:deviceTitle="温度传感器" />
 
+        <com.example.smarthome.view.DeviceCardView
+            android:id="@+id/cvHumiditySensor"
+            android:layout_width="85dp"
+            android:layout_height="136dp"
+            android:layout_margin="8dp"
+            app:deviceTitle="湿度传感器" />
+
+        <com.example.smarthome.view.DeviceCardView
+            android:id="@+id/cvAirConditioner"
+            android:layout_width="85dp"
+            android:layout_height="136dp"
+            android:layout_margin="8dp"
+            app:deviceTitle="客厅空调" />
+
+        <com.example.smarthome.view.DeviceCardView
+            android:id="@+id/cvTv"
+            android:layout_width="85dp"
+            android:layout_height="136dp"
+            android:layout_margin="8dp"
+            app:deviceTitle="客厅电视" />
+
+        <com.example.smarthome.view.DeviceCardView
+            android:id="@+id/cvLivingLamp"
+            android:layout_width="85dp"
+            android:layout_height="136dp"
+            android:layout_margin="8dp"
+            app:deviceTitle="客厅灯光" />
+
+        <com.example.smarthome.view.DeviceCardView
+            android:id="@+id/cvBedroomLamp"
+            android:layout_width="85dp"
+            android:layout_height="136dp"
+            android:layout_margin="8dp"
+            app:deviceTitle="卧室灯光" />
+
+        <com.example.smarthome.view.DeviceCardView
+            android:id="@+id/cvCurtain"
+            android:layout_width="85dp"
+            android:layout_height="136dp"
+            android:layout_margin="8dp"
+            app:deviceTitle="窗帘" />
+
+        <com.example.smarthome.view.DeviceCardView
+            android:id="@+id/cvWaterHeater"
+            android:layout_width="85dp"
+            android:layout_height="136dp"
+            android:layout_margin="8dp"
+            app:deviceTitle="热水器" />
+
+    </GridLayout>
 
 </LinearLayout>

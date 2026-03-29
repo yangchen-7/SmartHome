@@ -19,4 +19,13 @@ interface BemfaApi {
         @Query("topic") topic: String,
         @Query("type") type: Int,
     ): BaseResponse<List<MessageItem>>
+
+    //获取单个设备是否在线
+    @GET("va/online")
+    suspend fun getOnline(
+        @Query("uid") uid: String,
+        @Query("topic") topic: String,
+        @Query("type") type: Int,
+    ): BaseResponse<Boolean>
+
 }

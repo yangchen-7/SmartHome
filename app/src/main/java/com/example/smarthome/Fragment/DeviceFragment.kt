@@ -1,18 +1,18 @@
 package com.example.smarthome.Fragment
 
 import android.os.Bundle
-import android.view.Gravity
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.smarthome.Model.Repository.BemfaRepository
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import androidx.lifecycle.Lifecycle
+import com.example.smarthome.Model.DeviceType
 import com.example.smarthome.databinding.FragmentDeviceBinding
+import com.example.smarthome.view.DeviceCardView
 import com.example.smarthome.viewModel.DeviceViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class DeviceFragment : Fragment() {
@@ -21,14 +21,12 @@ class DeviceFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var viewModel: DeviceViewModel
-    private val bemfaRepository = BemfaRepository()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         _binding = FragmentDeviceBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -38,48 +36,56 @@ class DeviceFragment : Fragment() {
 
         viewModel = ViewModelProvider(this)[DeviceViewModel::class.java]
 
-        // 开空调
-        binding.btnOn.setOnClickListener {
-            viewModel.controlDevice("airConditioner", "on")
-        }
+        // 初始状态（加载中）
+        initLoadingState()
 
-        // 关空调
-        binding.btnOff.setOnClickListener {
-            viewModel.controlDevice("airConditioner", "off")
-        }
+        // 监听在线状态
+        observeDeviceOnline()
+    }
 
-        // 获取历史
-        binding.btnHistory.setOnClickListener {
-            loadAirConditionerHistory()
-        }
+    /**
+     * 初始化：全部显示“加载中...”
+     */
+    private fun initLoadingState() {
+        binding.cvAirConditioner.setState("加载中...")
+        binding.cvTv.setState("加载中...")
+        binding.cvLivingLamp.setState("加载中...")
+        binding.cvWaterHeater.setState("加载中...")
+        binding.cvBedroomLamp.setState("加载中...")
+        binding.cvCurtain.setState("加载中...")
+    }
 
-        // 观察状态
-        viewModel.uiState.observe(viewLifecycleOwner) {
-            binding.tvResult.text = it
-        }
+    /**
+     * 监听设备在线状态
+     */
+    private fun observeDeviceOnline() {
+        lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.deviceOnlineMap.collect { map ->
+                    updateCard(binding.cvTempSensor,map[DeviceType.TEMP])
+                    updateCard(binding.cvHumiditySensor,map[DeviceType.HUMI])
+                    updateCard(binding.cvAirConditioner, map[DeviceType.AIR_CONDITIONER])
+                    updateCard(binding.cvTv, map[DeviceType.TV])
+                    updateCard(binding.cvLivingLamp, map[DeviceType.LIVING_LAMP])
+                    updateCard(binding.cvWaterHeater, map[DeviceType.WATER_HEATER])
+                    updateCard(binding.cvBedroomLamp, map[DeviceType.BEDROOM_LAMP])
+                    updateCard(binding.cvCurtain, map[DeviceType.CURTAIN])
 
-        // 观察空调状态
-        viewModel.airConditionerStatus.observe(viewLifecycleOwner) {
-            binding.tvResult.text = if (it) "空调已开启" else "空调已关闭"
+                }
+            }
         }
     }
 
-    // 加载空调历史记录
-    private fun loadAirConditionerHistory() {
-        CoroutineScope(Dispatchers.Main).launch {
-            bemfaRepository.getAirConditionerMessage().onSuccess { messages ->
-                if (messages.isNotEmpty()) {
-                    val text = messages.joinToString("\n") {
-                        "消息: ${it.msg} 时间: ${it.time}"
-                    }
-                    binding.tvHistory.text = text
-                } else {
-                    binding.tvHistory.text = "暂无历史记录"
-                }
-            }.onFailure {
-                binding.tvHistory.text = "获取历史记录失败"
-            }
+    /**
+     * 更新卡片状态
+     */
+    private fun updateCard(view: DeviceCardView, isOnline: Boolean?) {
+        val stateText = when (isOnline) {
+            true -> "在线"
+            false -> "离线"
+            null -> "加载中..."
         }
+        view.setState(stateText)
     }
 
     override fun onDestroyView() {

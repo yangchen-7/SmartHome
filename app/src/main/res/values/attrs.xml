@@ -1,14 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <!-- ✅ 全局定义一次 -->
+    <attr name="deviceName" format="string"/>
+    <attr name="deviceTemp" format="string"/>
+    <attr name="deviceIcon" format="reference"/>
+    <attr name="checked" format="boolean"/>
+
+    <attr name="itemText" format="string"/>
+    <attr name="itemIcon" format="reference"/>
+    <attr name="itemTextColor" format="color"/>
+
+    <attr name="deviceTitle" format="string"/>
+    <attr name="deviceSubTitle" format="string"/>
+
+    <!-- ✅ 这里只引用，不写 format -->
     <declare-styleable name="DeviceSwitchView">
-        <attr name="deviceName" format="string"/>
-        <attr name="deviceTemp" format="string"/>
-        <attr name="deviceIcon" format="reference"/>
-        <attr name="checked" format="boolean"/>
+        <attr name="deviceName"/>
+        <attr name="deviceTemp"/>
+        <attr name="deviceIcon"/>
+        <attr name="checked"/>
     </declare-styleable>
 
     <declare-styleable name="ProfileItemView">
-        <attr name="itemText" format="string"/>
-        <attr name="itemIcon" format="reference"/>
+        <attr name="itemText"/>
+        <attr name="itemIcon"/>
+        <attr name="itemTextColor"/>
     </declare-styleable>
+
+    <declare-styleable name="DeviceCardView">
+        <attr name="deviceIcon"/>
+        <attr name="deviceTitle"/>
+        <attr name="deviceSubTitle"/>
+    </declare-styleable>
+
 </resources>
